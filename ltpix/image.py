@@ -35,11 +35,11 @@ class AstroImage(object):
 
         if self.success:
             fn = lambda b: os.path.join(self.path, 'HSC-' + b + '.fits')
-            self.red_fn = os.path.join(self.path, fn('I'))
+            self.red_fn = fn('I')
             self.red_data = fits.getdata(self.red_fn)
-            self.green_fn = os.path.join(self.path, fn('R'))
+            self.green_fn = fn('R')
             self.green_data = fits.getdata(self.green_fn)
-            self.blue_fn = os.path.join(self.path, fn('G'))
+            self.blue_fn = fn('G')
             self.blue_data = fits.getdata(self.blue_fn)
             self.rgb_data = RGBData(red=self.red_data, 
                                     green=self.green_data, 
