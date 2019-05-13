@@ -1,8 +1,11 @@
 import os, sys
 import numpy as np
 from astropy.io import fits
+from astropy.coordinates import SkyCoord
 from astropy.visualization import make_lupton_rgb
+from astropy.wcs import WCS
 from collections import namedtuple
+import webbrowser
 from .log import logger
 from .display import display_image, pixel_histogram
 
@@ -26,12 +29,13 @@ class AstroImage(object):
             logger.error('directory {} does not exist'.format(self.path))
             self.success = False
 
-        self.path = os.path.join(
-            self.path, '{}-{}'.format(object_type, object_num))
-        if not os.path.isdir(self.path):
-            logger.error('{} number {} of does not exist'.\
-                          format(object_type, object_num))
-            self.success = False
+        if self.success:
+            self.path = os.path.join(
+                self.path, '{}-{}'.format(object_type, object_num))
+            if not os.path.isdir(self.path):
+                logger.error('{} number {} of does not exist'.\
+                              format(object_type, object_num))
+                self.success = False
 
         if self.success:
             fn = lambda b: os.path.join(self.path, 'HSC-' + b + '.fits')
@@ -46,12 +50,23 @@ class AstroImage(object):
                                     blue=self.blue_data)
             self.band_key = dict(I='red', R='green', G='blue')
             self.bands = 'gri'
+            self.wcs = WCS(fits.getheader(self.red_fn, ext=1))
+            y_c, x_c = np.array(self.red_data.shape) / 2
+            self.sky_coord = SkyCoord.from_pixel(x_c, y_c, wcs=self.wcs)
 
     @property
     def object_info(self):
         with open(self.path + '/NOTES') as f:
             for line in f.readlines():
                 print(line, end='')
+
+    def legacy_viewer(self):
+        url = 'http://legacysurvey.org/viewer?ra={}&'
+        url += 'dec={}&zoom=14&layer=decals-dr7'
+        ra = self.sky_coord.ra.deg
+        dec = self.sky_coord.dec.deg
+        url = url.format(ra, dec)
+        webbrowser.open(url, new=1)
 
     def make_rgb_image(self, stretch=0.4, Q=8):
         rgb_image = make_lupton_rgb(self.rgb_data.red, 
