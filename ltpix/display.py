@@ -2,7 +2,11 @@ import os
 import numpy as np 
 import matplotlib.pyplot as plt 
 from . import project_dir
-plt.style.use(os.path.join(project_dir, 'ltpix/jpg.mplstyle'))
+
+try:
+    plt.style.use(os.path.join(project_dir, 'ltpix/jpg.mplstyle'))
+except:
+    pass
 
 
 __all__ = ['display_image', 'plot_pixel_histogram']
