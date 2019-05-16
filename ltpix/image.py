@@ -1,9 +1,12 @@
 import os, sys
 import numpy as np
 from astropy.io import fits
+from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.visualization import make_lupton_rgb
 from astropy.wcs import WCS
+from photutils import CircularAperture, SkyCircularAperture
+from photutils import aperture_photometry
 from collections import namedtuple
 import webbrowser
 from .log import logger
@@ -60,7 +63,7 @@ class AstroImage(object):
             for line in f.readlines():
                 print(line, end='')
 
-    def legacy_viewer(self):
+    def open_in_legacy_viewer(self):
         url = 'http://legacysurvey.org/viewer?ra={}&'
         url += 'dec={}&zoom=14&layer=decals-dr7'
         ra = self.sky_coord.ra.deg
@@ -112,3 +115,25 @@ class AstroImage(object):
 
         ax.set_title(color.split(':')[-1] + ' image pixel histogram', 
                      fontsize=26, y=1.01)
+
+    def measure_light_in_circle(self, positions, radius, sky_coords=False):
+
+        positions = np.asarray(positions) 
+        
+        if sky_coords:
+            wcs = self.wcs
+            positions = SkyCoord(positions, unit='deg')
+            apertures = SkyCircularAperture(positions, radius * u.arcsec)
+        else:
+            wcs = None
+            positions -= 1
+            apertures = CircularAperture(positions, radius)
+
+        light = {}
+
+        for b in ['red', 'green', 'blue']:
+            data = getattr(self, b + '_data')
+            phot = aperture_photometry(data, apertures, wcs=wcs)
+            light[b] = np.array(phot['aperture_sum'])
+
+        return light['red'], light['green'], light['blue']
