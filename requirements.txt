@@ -4,4 +4,4 @@ setuptools==40.4.0
 astropy==3.1.2
 ipython==7.5.0
 photutils==0.6
--er git+git@github.com:johnnygreco/love-thy-pixels.git@9c7bc03b06c159b854ff9ccbf14a7ab45658a971#egg=ltpix
+-e git+git@github.com:johnnygreco/love-thy-pixels.git@9c7bc03b06c159b854ff9ccbf14a7ab45658a971#egg=ltpix
