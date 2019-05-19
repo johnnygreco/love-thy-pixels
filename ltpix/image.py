@@ -13,7 +13,13 @@ from .log import logger
 from .display import display_image, pixel_histogram
 
 
-DATA_PATH = '/Users/jgreco/local-io/ltpix-data'
+if os.path.expanduser("~") == '/Users/jgreco':
+    DATA_PATH = '/Users/jgreco/local-io/ltpix-data'
+elif os.path.expanduser("~") == '/root':
+    DATA_PATH = '/content/gdrive/My Drive/ASPIRE2019/ltpix-data'
+else:
+    DATA_PATH = '.'
+
 RGBData = namedtuple('RGBData', 'red green blue')
 _galaxy_distance_Mpc = {1: 25.5, 2: 571.9, 3: 29.4, 4: 618.2}
 
