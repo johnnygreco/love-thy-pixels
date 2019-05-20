@@ -13,9 +13,15 @@ from .log import logger
 from .display import display_image, pixel_histogram
 
 
-DATA_PATH = '/Users/jgreco/local-io/ltpix-data'
-RGBData = namedtuple('RGBData', 'red green blue')
+if os.path.expanduser("~") == '/Users/jgreco':
+    DATA_PATH = '/Users/jgreco/local-io/ltpix-data'
+elif os.path.expanduser("~") == '/root':
+    DATA_PATH = '/content/gdrive/My Drive/ASPIRE2019/ltpix-data'
+else:
+    DATA_PATH = '.'
 
+RGBData = namedtuple('RGBData', 'red green blue')
+_galaxy_distance_Mpc = {1: 25.5, 2: 571.9, 3: 29.4, 4: 618.2}
 
 __all__ = ['AstroImage']
 
@@ -56,12 +62,25 @@ class AstroImage(object):
             self.wcs = WCS(fits.getheader(self.red_fn, ext=1))
             y_c, x_c = np.array(self.red_data.shape) / 2
             self.sky_coord = SkyCoord.from_pixel(x_c, y_c, wcs=self.wcs)
+            self.object_num = object_num
+
+            logger.info('Successfully loaded {} number {}!'.\
+                format(object_type, object_num))
 
     @property
     def object_info(self):
         with open(self.path + '/NOTES') as f:
             for line in f.readlines():
                 print(line, end='')
+
+    @property
+    def distance_lyr(self):
+        Mpc_to_lyr = 3.262e6
+        return _galaxy_distance_Mpc[self.object_num] * Mpc_to_lyr
+
+    @property
+    def distance_Mpc(self):
+        return _galaxy_distance_Mpc[self.object_num] 
 
     def open_in_legacy_viewer(self):
         url = 'http://legacysurvey.org/viewer?ra={}&'

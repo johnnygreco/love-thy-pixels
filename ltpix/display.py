@@ -9,7 +9,7 @@ except:
     pass
 
 
-__all__ = ['display_image', 'plot_pixel_histogram']
+__all__ = ['display_image', 'pixel_histogram']
 
 
 def _check_subplots(subplots, with_ticks=True, **kwargs):

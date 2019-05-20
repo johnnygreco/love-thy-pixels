@@ -1,0 +1,6 @@
+matplotlib==3.0.1
+numpy==1.15.1
+setuptools==40.4.0
+astropy==3.1.2
+ipython==7.5.0
+photutils==0.6
