@@ -99,7 +99,8 @@ class AstroImage(object):
         return rgb_image
 
     def display_single_band_image(self, band, cmap='gray_r', figsize=(10, 10),
-                                  percentiles=[1, 99]): 
+                                  percentiles=[1, 99], positions=None, 
+                                  radius=None, apcolor='lime'): 
 
         if len(band) == 1:
             image = getattr(self, self.band_key[band.upper()] + '_data')
@@ -109,8 +110,17 @@ class AstroImage(object):
             logger.error(band + ' is not a valid band!')
             return None
 
-        display_image(image, single_band_percentiles=percentiles, 
-                      single_band_cmap=cmap, figsize=figsize)
+        fig, ax = display_image(image, single_band_percentiles=percentiles, 
+                                 single_band_cmap=cmap, figsize=figsize)
+
+        if positions is not None:
+            if radius is None:
+                logger.error('You must give aperture radius to plot circles')
+            else:
+                positions = np.asarray(positions)
+                positions -= 1
+                apertures = CircularAperture(positions, radius)
+                apertures.plot(ax=ax, color=apcolor, lw=2)
 
 
     def display_rgb_image(self, figsize=(10, 10), **kwargs): 
