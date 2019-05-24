@@ -1,5 +1,7 @@
 import os, sys
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 from astropy.io import fits
 from astropy import units as u
 from astropy.coordinates import SkyCoord
@@ -8,6 +10,7 @@ from astropy.wcs import WCS
 from photutils import CircularAperture, SkyCircularAperture
 from photutils import aperture_photometry
 from collections import namedtuple
+from scipy import ndimage
 import webbrowser
 from .log import logger
 from .display import display_image, pixel_histogram
@@ -21,10 +24,17 @@ else:
     DATA_PATH = '.'
 
 RGBData = namedtuple('RGBData', 'red green blue')
-_galaxy_distance_Mpc = {1: 25.5, 2: 571.9, 3: 29.4, 4: 618.2}
+_galaxy_distance_Mpc = {1: 25.5, 2: 571.9, 3: 29.4, 4: 618.2, 5: 154.7}
 
-__all__ = ['AstroImage']
+__all__ = ['make_circle_image', 'AstroImage', 'AnimalImage']
 
+
+def make_circle_image():
+    yy, xx = np.mgrid[:15, :15]
+    r = np.sqrt((xx - 7)**2 + (yy - 7)**2)
+    circ = (r < 7).astype(int)
+    plt.imshow(circ, cmap='gray')
+    return circ
 
 class AstroImage(object):
 
@@ -121,7 +131,13 @@ class AstroImage(object):
                 positions -= 1
                 apertures = CircularAperture(positions, radius)
                 apertures.plot(ax=ax, color=apcolor, lw=2)
-
+                for num, (x, y) in enumerate(positions):
+                    ax.text(x + radius * 2.5, y, 
+                            num + 1, 
+                            va='center', 
+                            ha='left',
+                            fontsize=16, 
+                            color='red')
 
     def display_rgb_image(self, figsize=(10, 10), **kwargs): 
 
@@ -166,3 +182,73 @@ class AstroImage(object):
             light[b] = np.array(phot['aperture_sum'])
 
         return light['red'], light['green'], light['blue']
+
+
+class AnimalImage(object):
+
+    def __init__(self, animal_name, data_path=DATA_PATH):
+
+        self.success = True
+        self.path = os.path.join(data_path, 'animal-images')
+
+        if (animal_name == "dog") or (animal_name == "puppy"):
+            self.fn = os.path.join(self.path, 'puppy.jpg')
+        elif (animal_name == "bonnie") or (animal_name == "cat"):
+            self.fn = os.path.join(self.path, 'bonnie.jpg')
+        elif (animal_name == "comet") or (animal_name == "guinea pig"):
+            self.fn = os.path.join(self.path, 'comet.jpg')
+        else:
+            self.success = False
+            logger.error('Check image name before proceeding.')
+            logger.error('Acceptable names are: dog, puppy, bonnie, '\
+                         'cat, comet, and guinea pig.')
+
+        if self.success:
+
+            self.array = mpimg.imread(self.fn)
+
+            reds = self.array.copy()
+            reds[:, :, 1] = 0
+            reds[:, :, 2] = 0
+            self.red_data = reds
+
+            greens = self.array.copy()
+            greens[:, :, 0] = 0
+            greens[:, :, 2] = 0
+            self.green_data = greens
+
+            blues = self.array.copy()
+            blues[:, :, 0] = 0
+            blues[:, :, 1] = 0
+            self.blue_data = blues
+
+    def display(self, which_image=None, xmin=None, xmax=None, 
+                ymin=None, ymax=None, **kwargs):
+
+        figsize = kwargs.pop('figsize', (8, 8))
+        if which_image == 'red':
+            figsize = kwargs.pop('figsize', (8, 8))
+            plt.figure(figsize=figsize)
+            plt.imshow(self.red_data[ymin:ymax,xmin:xmax])
+        elif which_image == 'blue':
+            plt.figure(figsize=figsize)
+            plt.imshow(self.blue_data[ymin:ymax,xmin:xmax])
+        elif which_image == 'green':
+            plt.figure(figsize=figsize)
+            plt.imshow(self.green_data[ymin:ymax,xmin:xmax])
+        elif which_image == 'all':
+            figsize = kwargs.pop('figsize', (16, 8))
+            fig, axes = plt.subplots(1, 4, figsize=figsize,
+                         subplot_kw=dict(xticks=[], yticks=[]))
+            fs = 18
+            axes[0].imshow(self.array[ymin:ymax, xmin:xmax])
+            axes[0].set_title('full color', fontsize=fs)
+            axes[1].imshow(self.red_data[ymin:ymax, xmin:xmax])
+            axes[1].set_title('red channel', fontsize=fs)
+            axes[2].imshow(self.green_data[ymin:ymax, xmin:xmax])
+            axes[2].set_title('green channel', fontsize=fs)
+            axes[3].imshow(self.blue_data[ymin:ymax, xmin:xmax])
+            axes[3].set_title('blue channel', fontsize=fs);
+        else:
+            plt.figure(figsize=figsize)
+            plt.imshow(self.array[ymin:ymax,xmin:xmax])
