@@ -1,7 +1,4 @@
-# love-thy-pixels
-
-
-Notebooks
+# Love thy Pixels
 ---
 
 [(1) Intro to Jupyter Notebooks and Python](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-python.ipynb)
