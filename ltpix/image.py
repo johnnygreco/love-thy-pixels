@@ -205,24 +205,24 @@ class AnimalImage(object):
 
         if self.success:
 
-            self.array = mpimg.imread(self.fn)
+            self.rgb_data = mpimg.imread(self.fn)
 
-            reds = self.array.copy()
+            reds = self.rgb_data.copy()
             reds[:, :, 1] = 0
             reds[:, :, 2] = 0
             self.red_data = reds
 
-            greens = self.array.copy()
+            greens = self.rgb_data.copy()
             greens[:, :, 0] = 0
             greens[:, :, 2] = 0
             self.green_data = greens
 
-            blues = self.array.copy()
+            blues = self.rgb_data.copy()
             blues[:, :, 0] = 0
             blues[:, :, 1] = 0
             self.blue_data = blues
 
-    def display(self, which_image=None, xmin=None, xmax=None, 
+    def display(self, which_image='rgb', xmin=None, xmax=None, 
                 ymin=None, ymax=None, **kwargs):
 
         figsize = kwargs.pop('figsize', (8, 8))
@@ -236,12 +236,12 @@ class AnimalImage(object):
         elif which_image == 'green':
             plt.figure(figsize=figsize)
             plt.imshow(self.green_data[ymin:ymax,xmin:xmax])
-        elif which_image == 'all':
+        elif which_image == 'rgb channels':
             figsize = kwargs.pop('figsize', (16, 8))
             fig, axes = plt.subplots(1, 4, figsize=figsize,
                          subplot_kw=dict(xticks=[], yticks=[]))
             fs = 18
-            axes[0].imshow(self.array[ymin:ymax, xmin:xmax])
+            axes[0].imshow(self.rgb_data[ymin:ymax, xmin:xmax])
             axes[0].set_title('full color', fontsize=fs)
             axes[1].imshow(self.red_data[ymin:ymax, xmin:xmax])
             axes[1].set_title('red channel', fontsize=fs)
@@ -249,6 +249,12 @@ class AnimalImage(object):
             axes[2].set_title('green channel', fontsize=fs)
             axes[3].imshow(self.blue_data[ymin:ymax, xmin:xmax])
             axes[3].set_title('blue channel', fontsize=fs);
-        else:
+        elif which_image == 'rgb':
             plt.figure(figsize=figsize)
-            plt.imshow(self.array[ymin:ymax,xmin:xmax])
+            plt.imshow(self.rgb_data[ymin:ymax,xmin:xmax])
+        else:
+            logger.error('Invalid image option.') 
+            logger.error('Must be red, blue, green, rgb channels,'\
+                         'or rgb (default)')
+
+
