@@ -24,7 +24,8 @@ else:
     DATA_PATH = '.'
 
 RGBData = namedtuple('RGBData', 'red green blue')
-_galaxy_distance_Mpc = {1: 25.5, 2: 571.9, 3: 29.4, 4: 618.2, 5: 154.7}
+_galaxy_distance_Mpc = {1: 25.5, 2: 571.9, 3: 29.4, 4: 618.2, 
+                        5: 154.7, 6: 160.9, 7: 29.5}
 
 __all__ = ['make_circle_image', 'AstroImage', 'AnimalImage']
 
