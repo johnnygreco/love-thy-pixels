@@ -1,8 +1,8 @@
 # Love thy Pixels
 ---
 
-![](images/gc-ages.png)]
-![](images/age-colorbar.png)]
+![](images/gc-ages.png)
+![](images/age-colorbar.png)
 
 [(1) Intro to Jupyter Notebooks and Python](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-python.ipynb?flush_cache=true)
 
