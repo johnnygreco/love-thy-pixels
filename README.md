@@ -4,6 +4,29 @@
 ![](images/gc-ages.png)
 ![](images/age-colorbar.png)
 
+---
+
+## Overview
+This repo contains material from part of a week-long [program at Ohio State](https://u.osu.edu/aspire/) for middle schoolers. This particular activity uses `ltpix` (Love thy Pixels), a pedagogical software package designed to give the students hands-on experience in coding and image processing. And because they make the most beautiful images, the subject matter is galaxies!
+
+---
+
+## Code Example
+
+```python 
+from ltpix import AstroImage
+
+# Enter the galaxy number (1, 2, 3, or 4) into 
+# the parentheses like this AstroImage(<galaxy number>)
+galaxy = AstroImage(2) 
+
+galaxy.display_rgb_image()
+```
+
+
+---
+## Activity Outline
+
 [(1) Intro to Jupyter Notebooks and Python](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-python.ipynb?flush_cache=true)
 
 [(2) Intro to Images](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-images.ipynb?flush_cache=true)
