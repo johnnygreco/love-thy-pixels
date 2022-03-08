@@ -22,7 +22,7 @@ galaxy = AstroImage(2)
 
 galaxy.display_rgb_image()
 ```
-
+<img width="572" alt="galaxy_2" src="https://user-images.githubusercontent.com/10998105/157290492-4270a8fb-1702-48cf-94d4-c33c499228e8.png">
 
 ---
 ## Activity Outline
