@@ -6,6 +6,20 @@ This repo contains material from part of a week-long [program at Ohio State](htt
 
 ---
 
+## 🎢 Activity Outline
+
+[(1) Intro to Jupyter Notebooks and Python](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-python.ipynb?flush_cache=true)
+
+[(2) Intro to Images](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-images.ipynb?flush_cache=true)
+
+[(3) Galaxy Images!](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/galaxy-images.ipynb?flush_cache=true)
+
+[(4) Galaxy Colors and Ages!](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/galaxy-colors.ipynb?flush_cache=true)
+
+[(5) Exploring the Sky](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/legacy-viewer.ipynb?flush_cache=true)
+
+---
+
 ## 👩‍💻 Code Example
 
 ```python 
@@ -26,16 +40,3 @@ galaxy.display_rgb_image()
 ![](images/age-colorbar.png)
 
 Star clusters are groups of stars that are born at approximately the same moment in time. Interestingly, it turns out that the average color of such a group of stars is directly related to how old they are! Of course, understanding the details of this relationship is an entire field of research. Nevertheless, we can learn a lot about star clusters by measuring their colors. The above images are simulations, created using [ArtPop](https://github.com/ArtificialStellarPopulations/ArtPop), which show how the color of a population of stars evolves with time. 
-
----
-## 🎢 Activity Outline
-
-[(1) Intro to Jupyter Notebooks and Python](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-python.ipynb?flush_cache=true)
-
-[(2) Intro to Images](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/intro-to-images.ipynb?flush_cache=true)
-
-[(3) Galaxy Images!](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/galaxy-images.ipynb?flush_cache=true)
-
-[(4) Galaxy Colors and Ages!](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/galaxy-colors.ipynb?flush_cache=true)
-
-[(5) Exploring the Sky](https://nbviewer.jupyter.org/github/johnnygreco/love-thy-pixels/blob/master/notebooks/legacy-viewer.ipynb?flush_cache=true)
